@@ -4,6 +4,10 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Yellow',
   description: 'AI relationship assistant',
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 }
 
 export default function RootLayout({
