@@ -47,40 +47,42 @@ export default function ConversationsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="h-14 px-6 flex items-center justify-between border-b border-neutral-100 sticky top-0 bg-white z-10">
-        <div className="flex items-center gap-3">
+      <header className="h-14 px-4 md:px-6 flex items-center justify-between border-b border-neutral-100 sticky top-0 bg-white z-10">
+        <div className="flex items-center gap-2 md:gap-3">
           <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center"
+            className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
             style={{ backgroundColor: '#FDB813' }}
           >
             <span className="text-white text-xs font-bold">Y</span>
           </div>
           <h1 className="text-sm font-semibold text-neutral-900">Chats</h1>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5 md:gap-1">
           <button
             onClick={() => router.push('/matches')}
-            className="h-8 px-3 rounded-lg text-xs font-medium transition-colors hover:bg-neutral-50"
+            className="h-8 px-2 md:px-3 rounded-lg text-xs font-medium transition-colors hover:bg-neutral-50"
             style={{ color: '#FDB813' }}
           >
             Matches
           </button>
           <button
             onClick={() => router.push('/assistant')}
-            className="h-8 px-3 rounded-lg text-xs font-medium transition-colors hover:bg-neutral-50 text-neutral-600"
+            className="h-8 px-2 md:px-3 rounded-lg text-xs font-medium transition-colors hover:bg-neutral-50 text-neutral-600"
           >
-            Assistant
+            <span className="hidden sm:inline">Assistant</span>
+            <span className="sm:hidden">AI</span>
           </button>
           <button
             onClick={handleLogout}
-            className="h-8 px-3 rounded-lg text-xs text-neutral-400 hover:text-neutral-600 hover:bg-neutral-50 transition-colors"
+            className="h-8 px-2 md:px-3 rounded-lg text-xs text-neutral-400 hover:text-neutral-600 hover:bg-neutral-50 transition-colors"
           >
-            Log out
+            <span className="hidden sm:inline">Log out</span>
+            <span className="sm:hidden">↗</span>
           </button>
         </div>
       </header>
 
-      <div className="max-w-2xl mx-auto px-6 py-8">
+      <div className="max-w-2xl mx-auto px-4 md:px-6 py-6 md:py-8">
         {conversations.length === 0 ? (
           <div className="text-center py-24">
             <p className="text-neutral-400 text-sm mb-4">No conversations yet</p>

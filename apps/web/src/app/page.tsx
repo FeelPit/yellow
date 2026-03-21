@@ -2,16 +2,16 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white flex flex-col items-center justify-center px-6">
+    <main className="min-h-screen bg-white flex flex-col items-center justify-center px-5 md:px-6">
       <div className="w-full max-w-md text-center">
-        <div className="mb-14">
+        <div className="mb-10 md:mb-14">
           <div
-            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-8"
+            className="inline-flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl mb-6 md:mb-8"
             style={{ backgroundColor: '#FDB813' }}
           >
-            <span className="text-white text-2xl font-bold">Y</span>
+            <span className="text-white text-xl md:text-2xl font-bold">Y</span>
           </div>
-          <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 mb-3">
+          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 mb-3">
             Yellow
           </h1>
           <p className="text-neutral-500 text-base leading-relaxed">
@@ -19,7 +19,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="space-y-4 mb-14 text-left">
+        <div className="space-y-4 mb-10 md:mb-14 text-left">
           {[
             'AI builds your relationship profile',
             '5 matches every day',

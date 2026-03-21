@@ -63,8 +63,8 @@ export default function PhotoManager({ isOpen, onClose, onPhotoChange }: PhotoMa
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-      <div className="bg-white rounded-2xl w-full max-w-md mx-4 overflow-hidden shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/30">
+      <div className="bg-white rounded-t-2xl md:rounded-2xl w-full md:max-w-md md:mx-4 overflow-hidden shadow-xl animate-slide-up md:animate-none">
         <div className="px-5 py-4 flex items-center justify-between border-b border-neutral-100">
           <h2 className="text-sm font-semibold text-neutral-900">Your Photos</h2>
           <button
@@ -99,7 +99,7 @@ export default function PhotoManager({ isOpen, onClose, onPhotoChange }: PhotoMa
                     />
                     <button
                       onClick={() => handleDelete(photo.id)}
-                      className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/50 text-white text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/50 text-white text-xs flex items-center justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                     >
                       &times;
                     </button>

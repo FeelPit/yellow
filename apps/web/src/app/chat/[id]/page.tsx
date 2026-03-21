@@ -103,27 +103,27 @@ export default function ChatPage() {
 
   return (
     <div className="h-screen bg-white flex flex-col">
-      <header className="h-14 px-6 flex items-center justify-between border-b border-neutral-100 shrink-0">
-        <div className="flex items-center gap-3">
+      <header className="h-14 px-4 md:px-6 flex items-center justify-between border-b border-neutral-100 shrink-0">
+        <div className="flex items-center gap-2 md:gap-3 min-w-0">
           <button
             onClick={() => router.push('/conversations')}
-            className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors"
+            className="text-xs text-neutral-400 hover:text-neutral-600 transition-colors shrink-0"
           >
-            ← Back
+            ←
           </button>
-          <span className="text-sm font-semibold text-neutral-900">{otherUsername}</span>
+          <span className="text-sm font-semibold text-neutral-900 truncate">{otherUsername}</span>
         </div>
         {otherUserId && (
           <button
             onClick={() => setShowProfile(true)}
-            className="h-8 px-3 rounded-lg text-xs font-medium border border-neutral-200 text-neutral-600 hover:bg-neutral-50 transition-colors"
+            className="h-8 px-2.5 md:px-3 rounded-lg text-xs font-medium border border-neutral-200 text-neutral-600 hover:bg-neutral-50 transition-colors shrink-0"
           >
             Profile
           </button>
         )}
       </header>
 
-      <div className="flex-1 overflow-y-auto px-6 py-4 scrollbar-hidden">
+      <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4 scrollbar-hidden">
         {messages.length === 0 && (
           <div className="max-w-sm mx-auto mt-10">
             <div className="text-center mb-5">
@@ -207,7 +207,7 @@ export default function ChatPage() {
         </div>
       </div>
 
-      <div className="px-6 py-3 border-t border-neutral-100 shrink-0">
+      <div className="px-4 md:px-6 py-3 border-t border-neutral-100 shrink-0">
         <div className="max-w-xl mx-auto flex items-center gap-2">
           <input
             type="text"

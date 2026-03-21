@@ -66,10 +66,10 @@ export default function UserProfileModal({ userId, username, onClose }: UserProf
 
   return (
     <div
-      className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end md:items-center justify-center md:p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-xl">
+      <div className="bg-white rounded-t-2xl md:rounded-2xl w-full md:max-w-md max-h-[92vh] md:max-h-[90vh] overflow-y-auto shadow-xl animate-slide-up md:animate-none">
         {/* Close button */}
         <div className="sticky top-0 bg-white z-10 flex justify-end p-3 pb-0">
           <button

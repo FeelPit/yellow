@@ -64,7 +64,7 @@ export default function ChatAdvisor({ conversationId }: ChatAdvisorProps) {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="fixed left-4 bottom-20 w-11 h-11 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95 z-40"
+        className="fixed left-3 md:left-4 bottom-16 md:bottom-20 w-10 md:w-11 h-10 md:h-11 rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-105 active:scale-95 z-40"
         style={{ backgroundColor: '#FDB813' }}
         title="Ask Yellow for advice"
       >
@@ -76,7 +76,7 @@ export default function ChatAdvisor({ conversationId }: ChatAdvisorProps) {
   }
 
   return (
-    <div className="fixed left-4 bottom-20 w-80 h-[420px] bg-white rounded-2xl shadow-2xl border border-neutral-100 flex flex-col z-40 overflow-hidden">
+    <div className="fixed left-2 right-2 md:left-4 md:right-auto bottom-14 md:bottom-20 md:w-80 h-[380px] md:h-[420px] bg-white rounded-2xl shadow-2xl border border-neutral-100 flex flex-col z-40 overflow-hidden">
       {/* Header */}
       <div
         className="h-11 px-4 flex items-center justify-between shrink-0"

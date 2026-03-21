@@ -25,6 +25,7 @@ export default function AssistantPage() {
   const [showPhotoManager, setShowPhotoManager] = useState(false)
   const [profileViewData, setProfileViewData] = useState<ProfileViewData | null>(null)
   const [profileAge, setProfileAge] = useState<number | null>(null)
+  const [mobilePanel, setMobilePanel] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -86,7 +87,7 @@ export default function AssistantPage() {
             }
           }
         } catch (err) {
-          // Profile not ready yet — that's fine
+          // Profile not ready yet
         }
       } else {
         const conversationResponse = await apiClient.startConversation(
@@ -239,54 +240,65 @@ export default function AssistantPage() {
   }
 
   return (
-    <div className="h-screen bg-white flex">
+    <div className="h-screen bg-white flex flex-col md:flex-row">
       {/* Main chat area */}
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-14 px-5 flex items-center justify-between border-b border-neutral-100 shrink-0">
-          <div className="flex items-center gap-3">
+      <div className="flex-1 flex flex-col min-w-0 min-h-0">
+        <header className="h-14 px-4 md:px-5 flex items-center justify-between border-b border-neutral-100 shrink-0">
+          <div className="flex items-center gap-2 md:gap-3">
             <div
               className="w-7 h-7 rounded-lg flex items-center justify-center"
               style={{ backgroundColor: '#FDB813' }}
             >
               <span className="text-white text-xs font-bold">Y</span>
             </div>
-            <span className="text-sm text-neutral-400">@{currentUser?.username}</span>
+            <span className="text-sm text-neutral-400 truncate">@{currentUser?.username}</span>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5 md:gap-1">
             <button
               onClick={() => setShowThinking(!showThinking)}
-              className={`h-8 px-3 rounded-lg text-xs font-medium transition-colors ${
+              className={`h-8 px-2 md:px-3 rounded-lg text-xs font-medium transition-colors ${
                 showThinking
                   ? 'text-amber-600 bg-amber-50'
                   : 'text-neutral-400 hover:bg-neutral-50'
               }`}
               title={showThinking ? 'Hide AI thinking' : 'Show AI thinking'}
             >
-              {showThinking ? '🧠 Thinking' : '🧠'}
+              {showThinking ? '🧠' : '🧠'}
+            </button>
+
+            {/* Mobile profile toggle */}
+            <button
+              onClick={() => setMobilePanel(!mobilePanel)}
+              className="md:hidden h-8 px-2 rounded-lg text-xs font-medium text-neutral-400 hover:bg-neutral-50 transition-colors"
+              title="Profile"
+            >
+              👤
             </button>
 
             {profileReady && (
               <a
                 href="/matches"
-                className="h-8 px-3 rounded-lg text-xs font-medium flex items-center transition-colors hover:bg-neutral-50"
+                className="h-8 px-2 md:px-3 rounded-lg text-xs font-medium flex items-center transition-colors hover:bg-neutral-50"
                 style={{ color: '#FDB813' }}
               >
-                Matches
+                <span className="hidden sm:inline">Matches</span>
+                <span className="sm:hidden">💛</span>
               </a>
             )}
 
             <button
               onClick={handleLogout}
-              className="h-8 px-3 rounded-lg text-xs text-neutral-400 hover:text-neutral-600 hover:bg-neutral-50 transition-colors"
+              className="h-8 px-2 md:px-3 rounded-lg text-xs text-neutral-400 hover:text-neutral-600 hover:bg-neutral-50 transition-colors"
             >
-              Log out
+              <span className="hidden sm:inline">Log out</span>
+              <span className="sm:hidden">↗</span>
             </button>
           </div>
         </header>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-5 py-6 scrollbar-hidden">
+        <div className="flex-1 overflow-y-auto px-4 md:px-5 py-4 md:py-6 scrollbar-hidden">
           <div className="max-w-2xl mx-auto">
             {messages.map((message, idx) => (
               <div key={message.id}>
@@ -294,7 +306,6 @@ export default function AssistantPage() {
                   message={message}
                   showThinking={showThinking}
                 />
-                {/* Show profile view inline right after the view_profile response */}
                 {profileViewData && message.role === 'assistant' && idx === messages.length - 1 && message.content.includes("Here's how your profile looks") && (
                   <ProfileView data={profileViewData} apiBaseUrl={process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'} />
                 )}
@@ -305,7 +316,7 @@ export default function AssistantPage() {
         </div>
 
         {/* Input */}
-        <div className="px-5 py-4 border-t border-neutral-100 shrink-0">
+        <div className="px-4 md:px-5 py-3 md:py-4 border-t border-neutral-100 shrink-0">
           <div className="max-w-2xl mx-auto">
             <ChatInput
               onSend={handleSendMessage}
@@ -315,17 +326,35 @@ export default function AssistantPage() {
           </div>
         </div>
 
-        {/* Photo Manager Modal */}
         <PhotoManager
           isOpen={showPhotoManager}
           onClose={() => setShowPhotoManager(false)}
         />
       </div>
 
-      {/* Profile sidebar — always visible */}
-      <aside className="w-72 border-l border-neutral-100 overflow-y-auto shrink-0 bg-white">
+      {/* Profile sidebar — desktop */}
+      <aside className="hidden md:block w-72 border-l border-neutral-100 overflow-y-auto shrink-0 bg-white">
         <ProfilePanel snapshot={profileSnapshot} username={currentUser?.username} age={profileAge} />
       </aside>
+
+      {/* Profile panel — mobile slide-up */}
+      {mobilePanel && (
+        <div className="md:hidden fixed inset-0 z-50 flex flex-col">
+          <div className="flex-1 bg-black/30" onClick={() => setMobilePanel(false)} />
+          <div className="bg-white rounded-t-2xl max-h-[75vh] overflow-y-auto animate-slide-up">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-100 sticky top-0 bg-white z-10">
+              <span className="text-xs font-semibold text-neutral-400 uppercase tracking-wider">Profile</span>
+              <button
+                onClick={() => setMobilePanel(false)}
+                className="w-7 h-7 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-400 text-xs"
+              >
+                ✕
+              </button>
+            </div>
+            <ProfilePanel snapshot={profileSnapshot} username={currentUser?.username} age={profileAge} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

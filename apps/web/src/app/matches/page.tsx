@@ -171,50 +171,52 @@ export default function MatchesPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <header className="h-14 px-6 flex items-center justify-between border-b border-neutral-100 sticky top-0 bg-white z-10">
-        <div className="flex items-center gap-3">
+      <header className="h-14 px-4 md:px-6 flex items-center justify-between border-b border-neutral-100 sticky top-0 bg-white z-10">
+        <div className="flex items-center gap-2 md:gap-3 min-w-0">
           <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center"
+            className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
             style={{ backgroundColor: '#FDB813' }}
           >
             <span className="text-white text-xs font-bold">Y</span>
           </div>
           <h1 className="text-sm font-semibold text-neutral-900">Matches</h1>
           {currentUser && (
-            <span className="text-xs text-neutral-400">@{currentUser.username}</span>
+            <span className="text-xs text-neutral-400 hidden sm:inline">@{currentUser.username}</span>
           )}
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5 md:gap-1 shrink-0">
           {subscription && !subscription.active && (
-            <span className="text-[10px] text-neutral-400 mr-2">
+            <span className="text-[10px] text-neutral-400 mr-1 md:mr-2 hidden sm:inline">
               {subscription.free_chats_remaining > 0
-                ? `${subscription.free_chats_remaining} free message`
-                : 'No free messages left'}
+                ? `${subscription.free_chats_remaining} free msg`
+                : 'No free msgs'}
             </span>
           )}
           <button
             onClick={() => router.push('/conversations')}
-            className="h-8 px-3 rounded-lg text-xs font-medium transition-colors hover:bg-neutral-50 text-neutral-600"
+            className="h-8 px-2 md:px-3 rounded-lg text-xs font-medium transition-colors hover:bg-neutral-50 text-neutral-600"
           >
             Chats
           </button>
           <button
             onClick={() => router.push('/assistant')}
-            className="h-8 px-3 rounded-lg text-xs font-medium transition-colors hover:bg-neutral-50"
+            className="h-8 px-2 md:px-3 rounded-lg text-xs font-medium transition-colors hover:bg-neutral-50"
             style={{ color: '#FDB813' }}
           >
-            Assistant
+            <span className="hidden sm:inline">Assistant</span>
+            <span className="sm:hidden">AI</span>
           </button>
           <button
             onClick={handleLogout}
-            className="h-8 px-3 rounded-lg text-xs text-neutral-400 hover:text-neutral-600 hover:bg-neutral-50 transition-colors"
+            className="h-8 px-2 md:px-3 rounded-lg text-xs text-neutral-400 hover:text-neutral-600 hover:bg-neutral-50 transition-colors"
           >
-            Log out
+            <span className="hidden sm:inline">Log out</span>
+            <span className="sm:hidden">↗</span>
           </button>
         </div>
       </header>
 
-      <div className="max-w-3xl mx-auto px-6 py-8">
+      <div className="max-w-3xl mx-auto px-4 md:px-6 py-6 md:py-8">
         {matches.length === 0 ? (
           <div className="text-center py-24">
             <div
@@ -244,7 +246,7 @@ export default function MatchesPage() {
               return (
                 <div
                   key={match.user_id}
-                  className="border border-neutral-100 rounded-2xl p-5 transition-all hover:border-neutral-200 hover:shadow-sm"
+                  className="border border-neutral-100 rounded-2xl p-4 md:p-5 transition-all hover:border-neutral-200 hover:shadow-sm"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
@@ -290,26 +292,26 @@ export default function MatchesPage() {
                     {match.match_explanation}
                   </p>
 
-                  <div className="flex gap-2 mb-4">
+                  <div className="flex flex-wrap gap-1.5 md:gap-2 mb-4">
                     {match.profile.communication_style && (
-                      <span className="text-xs text-neutral-500 bg-neutral-50 px-2.5 py-1 rounded-lg">
-                        {match.profile.communication_style.slice(0, 40)}
-                        {match.profile.communication_style.length > 40 ? '...' : ''}
+                      <span className="text-[11px] md:text-xs text-neutral-500 bg-neutral-50 px-2 md:px-2.5 py-1 rounded-lg">
+                        {match.profile.communication_style.slice(0, 35)}
+                        {match.profile.communication_style.length > 35 ? '...' : ''}
                       </span>
                     )}
                     {match.profile.values && (
-                      <span className="text-xs text-neutral-500 bg-neutral-50 px-2.5 py-1 rounded-lg">
-                        {match.profile.values.slice(0, 40)}
-                        {match.profile.values.length > 40 ? '...' : ''}
+                      <span className="text-[11px] md:text-xs text-neutral-500 bg-neutral-50 px-2 md:px-2.5 py-1 rounded-lg">
+                        {match.profile.values.slice(0, 35)}
+                        {match.profile.values.length > 35 ? '...' : ''}
                       </span>
                     )}
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => handleLike(match.user_id)}
                       disabled={actionLoading === match.user_id}
-                      className={`h-9 px-4 rounded-lg text-xs font-medium transition-all duration-200 active:scale-[0.98] border ${
+                      className={`h-9 px-3 md:px-4 rounded-lg text-xs font-medium transition-all duration-200 active:scale-[0.98] border ${
                         isLiked
                           ? 'bg-red-50 border-red-200 text-red-600'
                           : 'bg-white border-neutral-200 text-neutral-600 hover:border-red-200 hover:text-red-500'
@@ -321,7 +323,7 @@ export default function MatchesPage() {
 
                     <button
                       onClick={() => setViewingProfile({ userId: match.user_id, username: match.username })}
-                      className="h-9 px-4 rounded-lg text-xs font-medium transition-all duration-200 active:scale-[0.98] border border-neutral-200 text-neutral-600 hover:bg-neutral-50"
+                      className="h-9 px-3 md:px-4 rounded-lg text-xs font-medium transition-all duration-200 active:scale-[0.98] border border-neutral-200 text-neutral-600 hover:bg-neutral-50"
                     >
                       Profile
                     </button>
@@ -329,7 +331,7 @@ export default function MatchesPage() {
                     <button
                       onClick={() => handleMessage(match.user_id)}
                       disabled={actionLoading === match.user_id + '-msg'}
-                      className="h-9 px-4 rounded-lg text-xs font-medium transition-all duration-200 hover:brightness-105 active:scale-[0.98]"
+                      className="h-9 px-3 md:px-4 rounded-lg text-xs font-medium transition-all duration-200 hover:brightness-105 active:scale-[0.98]"
                       style={{ backgroundColor: '#FDB813', color: '#000' }}
                       data-testid={`message-${match.user_id}`}
                     >
