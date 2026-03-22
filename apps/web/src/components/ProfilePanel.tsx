@@ -140,6 +140,38 @@ export default function ProfilePanel({ snapshot, username, age, loading = false 
         </div>
       )}
 
+      {/* Profile readiness */}
+      {snapshot.profile_readiness != null && (
+        <div className="mb-5">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
+              Profile readiness
+            </span>
+            <span className="text-[11px] font-semibold text-neutral-500">
+              {snapshot.profile_readiness}%
+            </span>
+          </div>
+          <div className="h-1.5 bg-neutral-100 rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-700 ease-out"
+              style={{
+                width: `${snapshot.profile_readiness}%`,
+                backgroundColor: snapshot.profile_readiness >= 85 ? '#22c55e' : '#FDB813',
+              }}
+            />
+          </div>
+          <p className="text-[10px] text-neutral-400 mt-1">
+            {snapshot.profile_readiness < 30
+              ? 'Just getting started — keep chatting'
+              : snapshot.profile_readiness < 60
+              ? 'Patterns emerging — tell me more'
+              : snapshot.profile_readiness < 85
+              ? 'Strong picture — a few gaps left'
+              : 'Ready to match ✓'}
+          </p>
+        </div>
+      )}
+
       {/* Trait insights — only filled ones */}
       {filledTraits.length > 0 && (
         <div className="mb-5">

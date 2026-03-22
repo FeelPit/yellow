@@ -101,6 +101,7 @@ async def send_message(
     profile = service.profile_service.get_profile(session_id)
     snapshot = None
     if profile:
+        readiness = analysis.get("profile_readiness", None) if analysis else None
         snapshot = ProfileSnapshot(
             age=profile.age,
             gender=profile.gender,
@@ -109,6 +110,7 @@ async def send_message(
             attachment_style=profile.attachment_style,
             partner_preferences=profile.partner_preferences,
             values=profile.values,
+            profile_readiness=readiness,
         )
 
     pv = None

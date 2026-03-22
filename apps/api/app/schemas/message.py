@@ -32,6 +32,7 @@ class ProfileSnapshot(BaseModel):
     attachment_style: Optional[str] = None
     partner_preferences: Optional[str] = None
     values: Optional[str] = None
+    profile_readiness: Optional[int] = None
 
 
 class PhotoInfo(BaseModel):

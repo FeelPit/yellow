@@ -82,6 +82,7 @@ export default function AssistantPage() {
               attachment_style: profileData.attachment_style,
               partner_preferences: profileData.partner_preferences,
               values: profileData.values,
+              profile_readiness: null,
             })
             setProfileAge(profileData.age ?? null)
             if (profileData.values && profileData.communication_style) {

@@ -60,6 +60,7 @@ export interface ProfileSnapshot {
   attachment_style: string | null;
   partner_preferences: string | null;
   values: string | null;
+  profile_readiness: number | null;
 }
 
 export interface PhotoInfo {
