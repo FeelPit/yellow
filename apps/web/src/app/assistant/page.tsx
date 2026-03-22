@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import posthog from 'posthog-js'
 import { apiClient, Message, ProfileSnapshot, ProfileViewData, UserResponse } from '@/lib/api'
 import ChatMessage from '@/components/ChatMessage'
 import ChatInput from '@/components/ChatInput'
@@ -45,6 +46,7 @@ export default function AssistantPage() {
           const user = await apiClient.getCurrentUser()
           setCurrentUser(user)
           setIsAuthenticated(true)
+          posthog.identify(user.id, { email: user.email, username: user.username })
           await initSession()
         } catch (err) {
           localStorage.removeItem('yellow_token')
@@ -126,6 +128,7 @@ export default function AssistantPage() {
       const user = await apiClient.getCurrentUser()
       setCurrentUser(user)
       setIsAuthenticated(true)
+      posthog.identify(user.id, { email: data.email, username: user.username })
 
       await initSession()
     } catch (err) {
@@ -136,6 +139,7 @@ export default function AssistantPage() {
   const handleLogout = () => {
     localStorage.removeItem('yellow_token')
     apiClient.setToken(null)
+    posthog.reset()
     setIsAuthenticated(false)
     setCurrentUser(null)
     setSessionId(null)
