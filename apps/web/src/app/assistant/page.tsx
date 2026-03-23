@@ -9,6 +9,7 @@ import ProfilePanel from '@/components/ProfilePanel'
 import ProfileView from '@/components/ProfileView'
 import PhotoManager from '@/components/PhotoManager'
 import AuthForm from '@/components/AuthForm'
+import ProfileComplete from '@/components/ProfileComplete'
 
 export default function AssistantPage() {
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login')
@@ -27,6 +28,8 @@ export default function AssistantPage() {
   const [profileViewData, setProfileViewData] = useState<ProfileViewData | null>(null)
   const [profileAge, setProfileAge] = useState<number | null>(null)
   const [mobilePanel, setMobilePanel] = useState(false)
+  const [showProfileComplete, setShowProfileComplete] = useState(false)
+  const prevProfileReady = useRef(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -87,6 +90,7 @@ export default function AssistantPage() {
             setProfileAge(profileData.age ?? null)
             if (profileData.values && profileData.communication_style) {
               setProfileReady(true)
+              prevProfileReady.current = true
             }
           }
         } catch (err) {
@@ -180,8 +184,16 @@ export default function AssistantPage() {
         }
       }
 
-      if (response.profile_ready) {
+      const isReady = response.profile_ready ||
+        (response.profile_snapshot?.profile_readiness != null && response.profile_snapshot.profile_readiness >= 85)
+
+      if (isReady && !prevProfileReady.current) {
         setProfileReady(true)
+        const alreadySeen = localStorage.getItem('yellow_profile_complete_seen')
+        if (!alreadySeen) {
+          setShowProfileComplete(true)
+        }
+        prevProfileReady.current = true
       }
 
       if (response.intent === 'photo_manage') {
@@ -377,6 +389,13 @@ export default function AssistantPage() {
             <ProfilePanel snapshot={profileSnapshot} username={currentUser?.username} age={profileAge} />
           </div>
         </div>
+      )}
+
+      {showProfileComplete && profileSnapshot && (
+        <ProfileComplete
+          snapshot={profileSnapshot}
+          onDismiss={() => setShowProfileComplete(false)}
+        />
       )}
     </div>
   )
