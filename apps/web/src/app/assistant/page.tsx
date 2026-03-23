@@ -77,6 +77,14 @@ export default function AssistantPage() {
         try {
           const profileData = await apiClient.getProfile(sessionResponse.session_id)
           if (profileData) {
+            const filledTraits = profileData.metrics
+              ? Object.values(profileData.metrics).filter((v) => v !== null).length
+              : 0
+            const estimatedReadiness = Math.min(100, Math.max(filledTraits * 12, 0))
+            const isReady = estimatedReadiness >= 85 ||
+              (profileData.values && profileData.communication_style) ||
+              filledTraits >= 7
+
             setProfileSnapshot({
               age: profileData.age ?? null,
               gender: profileData.gender ?? null,
@@ -85,10 +93,10 @@ export default function AssistantPage() {
               attachment_style: profileData.attachment_style,
               partner_preferences: profileData.partner_preferences,
               values: profileData.values,
-              profile_readiness: null,
+              profile_readiness: estimatedReadiness,
             })
             setProfileAge(profileData.age ?? null)
-            if (profileData.values && profileData.communication_style) {
+            if (isReady) {
               setProfileReady(true)
               prevProfileReady.current = true
             }

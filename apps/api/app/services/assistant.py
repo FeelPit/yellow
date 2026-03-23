@@ -196,13 +196,12 @@ class AssistantService:
         readiness = analysis.get("profile_readiness", 0)
         profile_ready = readiness >= 85 or bool(updated_profile.values and updated_profile.communication_style)
 
-        # Check if we should nudge user to upload a photo (once, after 3+ messages)
         photo_count = self.db.query(Photo).filter_by(user_id=updated_profile.user_id).count()
         already_nudged = any(
             "camera button" in msg.content for msg in messages if msg.role == "assistant"
         )
         photo_nudge = ""
-        if user_msg_count >= 3 and photo_count == 0 and not already_nudged:
+        if profile_ready and photo_count == 0 and not already_nudged:
             photo_nudge = (
                 "\n\nBy the way — if you share a photo, I can pick up on your vibe "
                 "and match you with people who have a similar energy. Not about looks — "

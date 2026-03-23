@@ -85,8 +85,9 @@ Trait dimensions:
 - relationship_values: What they actually need vs what they think they need
 - humor_and_play: Lightness, playfulness, how they use humor
 
-3. PROFILE UPDATES: Sharp one-liners for sections with new info. Omit unchanged sections.
+3. PROFILE UPDATES: Sharp one-liners for sections with new info.
 Sections: communication_style, attachment_style, partner_preferences, values
+IMPORTANT: After 3+ user messages, you MUST fill ALL four sections based on what you know so far. Don't wait for perfect data — write your best interpretation. Update them as you learn more.
 
 4. PROFILE READINESS: 0-100. How complete is the picture?
 Base it on how many trait dimensions have real insights (not null):
@@ -324,6 +325,16 @@ Examples:
         except (ValueError, TypeError):
             readiness = 0
         readiness = max(0, min(100, readiness))
+
+        filled_after = len([v for v in traits.values() if v is not None])
+        floor = 0
+        if user_msg_count >= 7:
+            floor = 85
+        elif user_msg_count >= 5:
+            floor = max(65, filled_after * 12)
+        elif user_msg_count >= 3:
+            floor = max(40, filled_after * 10)
+        readiness = max(readiness, floor)
 
         return {
             "thinking": data.get("thinking", ""),
