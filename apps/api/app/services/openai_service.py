@@ -89,10 +89,14 @@ Trait dimensions:
 Sections: communication_style, attachment_style, partner_preferences, values
 
 4. PROFILE READINESS: 0-100. How complete is the picture?
-- 0-30: Just started, surface info only
-- 30-60: Patterns emerging, need more depth
-- 60-85: Strong picture, a few gaps
-- 85-100: Ready to match
+Base it on how many trait dimensions have real insights (not null):
+- 1-2 traits filled: 15-30
+- 3-4 traits filled: 35-55
+- 5-6 traits filled: 60-75
+- 7 traits filled: 80-90
+- 8 traits filled + profile_updates have data: 90-100
+Be generous — after 5+ substantive messages, readiness should be at least 70.
+After 8+ messages with real answers, it should be 85+.
 
 IMPORTANT: Return JSON always in English, regardless of what language the conversation is in.
 
@@ -284,11 +288,14 @@ Examples:
 
     def analyze_message(self, conversation_history: list[dict[str, str]], current_traits: dict | None) -> dict:
         """Analyze the latest user message and return thinking + updated traits + profile updates."""
-        context_note = ""
+        user_msg_count = len([m for m in conversation_history if m["role"] == "user"])
+        filled_count = 0
+        context_note = f"\n\nConversation has {user_msg_count} user messages so far."
         if current_traits:
             existing = {k: v for k, v in current_traits.items() if v is not None}
+            filled_count = len(existing)
             if existing:
-                context_note = f"\n\nCurrent trait insights: {json.dumps(existing)}. Refine or rewrite them based on new evidence. Keep them concise."
+                context_note += f"\nCurrent trait insights ({filled_count}/8 filled): {json.dumps(existing)}. Refine or rewrite them based on new evidence. Keep them concise."
 
         messages = [
             {"role": "system", "content": ANALYSIS_PROMPT + context_note},
@@ -311,11 +318,18 @@ Examples:
             if key not in traits:
                 traits[key] = None
 
+        raw_readiness = data.get("profile_readiness", 0)
+        try:
+            readiness = int(raw_readiness)
+        except (ValueError, TypeError):
+            readiness = 0
+        readiness = max(0, min(100, readiness))
+
         return {
             "thinking": data.get("thinking", ""),
             "traits": traits,
             "profile_updates": data.get("profile_updates", {}),
-            "profile_readiness": data.get("profile_readiness", 0),
+            "profile_readiness": readiness,
         }
 
     def analyze_photo(self, image_path: str) -> dict:

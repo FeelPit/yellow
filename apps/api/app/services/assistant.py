@@ -193,7 +193,8 @@ class AssistantService:
                 pass
 
         updated_profile = self.profile_service.evolve_profile(session_id, analysis)
-        profile_ready = bool(updated_profile.values and updated_profile.communication_style)
+        readiness = analysis.get("profile_readiness", 0)
+        profile_ready = readiness >= 85 or bool(updated_profile.values and updated_profile.communication_style)
 
         # Check if we should nudge user to upload a photo (once, after 3+ messages)
         photo_count = self.db.query(Photo).filter_by(user_id=updated_profile.user_id).count()
