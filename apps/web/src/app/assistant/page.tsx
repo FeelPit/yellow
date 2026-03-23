@@ -152,17 +152,26 @@ export default function AssistantPage() {
   const handleSendMessage = async (content: string) => {
     if (!sessionId || !content.trim()) return
 
+    const optimisticUserMsg: Message = {
+      id: crypto.randomUUID(),
+      session_id: sessionId,
+      role: 'user',
+      content: content.trim(),
+      created_at: new Date().toISOString(),
+    }
+
+    setMessages((prev) => [...prev, optimisticUserMsg])
+
     try {
       setSending(true)
       setError(null)
 
       const response = await apiClient.sendMessage(sessionId, content)
 
-      setMessages((prev) => [
-        ...prev,
-        response.user_message,
-        response.assistant_message,
-      ])
+      setMessages((prev) => {
+        const withoutOptimistic = prev.filter((m) => m.id !== optimisticUserMsg.id)
+        return [...withoutOptimistic, response.user_message, response.assistant_message]
+      })
 
       if (response.profile_snapshot) {
         setProfileSnapshot(response.profile_snapshot)
@@ -316,6 +325,15 @@ export default function AssistantPage() {
                 )}
               </div>
             ))}
+            {sending && (
+              <div className="flex justify-start mb-4 animate-fade-in">
+                <div className="bg-neutral-100 rounded-2xl rounded-bl-md px-4 py-3 flex items-center gap-1">
+                  <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-2 h-2 bg-neutral-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
         </div>
