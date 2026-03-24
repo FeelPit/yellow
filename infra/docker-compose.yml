@@ -25,6 +25,7 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://yellow:yellow123@postgres:5432/yellow_db
+      UPLOAD_DIR: /uploads
     depends_on:
       postgres:
         condition: service_healthy

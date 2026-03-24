@@ -8,9 +8,7 @@ from app.models.photo import Photo
 from app.models.profile import Profile
 from app.services.openai_service import OpenAIServiceProtocol
 
-import tempfile
-
-UPLOAD_DIR = os.environ.get("UPLOAD_DIR", os.path.join(tempfile.gettempdir(), "yellow_uploads"))
+UPLOAD_DIR = os.environ.get("UPLOAD_DIR", "/uploads")
 MAX_PHOTOS = 3
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5MB
